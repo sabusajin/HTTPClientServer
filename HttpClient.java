@@ -11,7 +11,7 @@ public class HttpClient {
         String command = args[2];
         String fileName = args[3];
         int fileSize = 6400000;
-        String workingDirectory = System.getProperty("user.dir") + "\\" + fileName;
+        String workingDirectory = System.getProperty("user.dir") +"\\" + fileName;
         
         try 
         {
@@ -93,11 +93,11 @@ public class HttpClient {
                     
                     try{
 
-                        String response = "";
+                        String response = (String) in.readObject();
 
                         while (response != null)
                         {
-                        System.out.println("Response from server: \n" + response + "\n");
+                        System.out.println("Response from server: " + response + "\n");
                         response = (String) in.readObject();
                         }
 

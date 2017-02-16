@@ -1,4 +1,5 @@
 import java.net.*;
+import java.util.Scanner;
 import java.io.*;
 
 public class HttpServer extends Thread{
@@ -18,6 +19,8 @@ public class HttpServer extends Thread{
         try
         {       
             HttpServer Thread;
+            Thread thread =new Thread(new Exit());
+            thread.start();
             for (int i=0; i < args.length; i++)
             {       Thread = new HttpServer (ports[i]);
                 Thread.start();
@@ -59,10 +62,7 @@ public class HttpServer extends Thread{
                 String fileName = Command[1];
                 String httpVersion = Command[2];
                 
-                String workingDirectory = System.getProperty("user.dir");
-                
-                //System.out.println(workingDirectory);
-                
+                String workingDirectory = System.getProperty("user.dir");                
                 
                 if ( command.equals("GET"))
                 {
@@ -91,8 +91,7 @@ public class HttpServer extends Thread{
 
                 }
                 else if ( command.equals("PUT"))
-                {
-                    //System.out.println(workingDirectory + "\\"+ fileName);
+                {           
                     
                     
                     
@@ -134,6 +133,7 @@ public class HttpServer extends Thread{
                         } while (bytesRead == bufferSize);
 
                         out.writeObject("HTTP/1.1 200 OK File Created");
+                        System.out.println("New file "+ fileName + " created in server");
 
 
                         fos.close();
@@ -184,6 +184,34 @@ public class HttpServer extends Thread{
     public static void throwException(String message) throws Exception
     {
         throw new Exception(message);
+    }
+
+
+    private static class Exit implements Runnable{
+        
+        Scanner scanner = new Scanner(System.in);
+    
+        public void run(){
+            String msg = null;
+            while(true){
+                try{
+                    msg = scanner.nextLine();
+                }catch(Exception e){
+
+                    System.out.println();
+                }
+             
+                if(msg.equals("exit")) 
+                {
+                System.out.println("Closing the open sockets \n");
+                
+                System.out.println("Sockets closed \n");
+
+
+                System.exit(0); 
+                }
+            }
+        }
     }
         
         
